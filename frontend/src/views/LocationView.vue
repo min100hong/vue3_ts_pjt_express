@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>Home 페이지 입니다</h1>
+    <h1>오시는 길</h1>
   </div>
 </template>

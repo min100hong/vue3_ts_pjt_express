@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 5000
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
@@ -41,6 +41,7 @@ const users = [
 
 // 로그인상태 확인
 app.get('/account', (req, res) => {
+  console.log('account req >>>', req.cookies, req.cookies.token)
   if(req.cookies && req.cookies.token) {
     // jwt 복호화
     jwt.verify(req.cookies.token, 'abc1234', (err, decoded) => {
@@ -50,7 +51,7 @@ app.get('/account', (req, res) => {
       }
     })
   } else {
-    return res.send()
+    return res.send(401)
   }
 })
 
@@ -69,7 +70,7 @@ app.post('/account', (req, res) => {
       expiresIn: '10m', // 로그인 유지시간
       issuer: 'M.B.H'   // 작성자
     })
-    //Cookie Options
+    // Cookie Options
     const options = {
       domain: "localhost",
       path: "/",
@@ -77,11 +78,12 @@ app.post('/account', (req, res) => {
       sameSite: "strict"
     }
     res.cookie("token", token, options)
-
+    // console.log(isUser.id, ' | ', isUser.userName, ' | ', isUser.userId)
     res.send({
-      id: isUser.id,
-      userName: isUser.userName,
-      userId: isUser.userId,
+      // id: isUser.id,
+      // userName: isUser.userName,
+      // userId: isUser.userId,
+      token: token,
       status: 200
     })
   } else {

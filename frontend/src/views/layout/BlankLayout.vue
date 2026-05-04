@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>Home 페이지 입니다</h1>
+    <RouterView></RouterView>
   </div>
 </template>

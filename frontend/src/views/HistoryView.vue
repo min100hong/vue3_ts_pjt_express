@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>Home 페이지 입니다</h1>
+    <h1>회사연혁</h1>
   </div>
 </template>

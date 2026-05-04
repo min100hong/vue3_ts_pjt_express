@@ -1,0 +1,10 @@
+.router-link-active {
+  font-weight: 700;
+  color: var(--bs-nav-underline-link-active-color);
+  border-bottom-color: currentcolor !important;
+}
+
+.top-menu a.active {
+  font-weight: bold;
+  border-bottom: 2px solid currentcolor !important;
+}

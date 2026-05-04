@@ -1,0 +1,16 @@
+{
+  "users" : [
+    {
+      "id": 1,
+      "name": "홍길동",
+      "email": "홍길동@dummy.com",
+      "gender": "F"
+    },
+    {
+      "id": 2,
+      "name": "장보고",
+      "email": "장보고@dummy.com",
+      "gender": "M"
+    }
+  ]
+}
