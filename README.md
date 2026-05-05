@@ -1,4 +1,4 @@
-# frontend
+# === FrontEnd ===
 
 This template should help get you started developing with Vue 3 in Vite.
 - .env.development : 개발환경
@@ -14,7 +14,7 @@ This template should help get you started developing with Vue 3 in Vite.
 - cd frontend
 - npm run start
 
-# 구성내용
+## 구성내용
  - 중첩 라우터
   - GNB를 클릭하고 하위그룹의 Route를 옮겨다녀도 GNB는 Active 되어 있는 장점.
     active-class="active" -> css a.active 내용을 기술 
@@ -23,10 +23,12 @@ This template should help get you started developing with Vue 3 in Vite.
   - 팝업레이아웃
     - 팝업을 감싸는 Layout을 만들어 <slot></slot> 화 시켜서 공통화 시킴.
 
-# 간단하지만 실수때문에 고생한것
-  - <form></form> 안쪽에 <button type="button" class="btn btn-primary" @click="userLogin">로그인</button> type을 button으로
+## 간단하지만 실수때문에 고생한것
+  - <'form'>태그 안쪽에 <'button' type="button" class="btn btn-primary" @click="userLogin">로그인<'/button'>" type을 button으로
   - 또는 <form @sumit.prevent="userLogin"></form> 이렇게 해주어야 login API 호출뒤에 브라우저가 리로딩 되지 않고 다음 행이 실행됨.
-### BackEnd
+
+
+# === BackEnd ===
 
 ### 설치 모듈
 - "express": "^5.2.1",
