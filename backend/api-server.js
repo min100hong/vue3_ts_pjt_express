@@ -59,7 +59,7 @@ app.get('/account', (req, res) => {
 app.post('/account', (req, res) => {
   const id = req.body.id
   const pw = req.body.pw
-  
+  console.log(id,' -||- ', pw)
   const isUser = users.find(m => m.userId === id && m.password === pw)
   if(isUser) {
     // token 만들기
@@ -71,14 +71,14 @@ app.post('/account', (req, res) => {
       issuer: 'M.B.H'   // 작성자
     })
     // Cookie Options
-    const options = {
-      domain: "localhost",
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict"
-    }
-    res.cookie("token", token, options)
-    // console.log(isUser.id, ' | ', isUser.userName, ' | ', isUser.userId)
+    // const options = {
+    //   domain: "localhost",
+    //   path: "/",
+    //   httpOnly: true,
+    //   sameSite: "strict"
+    // }
+    // res.cookie("token", token, options)
+    console.log(isUser.id, ' | ', isUser.userName, ' | ', isUser.userId, '\n',' token| ', token)
     res.send({
       // id: isUser.id,
       // userName: isUser.userName,

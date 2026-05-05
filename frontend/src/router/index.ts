@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import Cookies from 'js-cookie'
-// import axios from 'axios'
+import Cookies from 'js-cookie'
+import { useAuthStore } from '@/stores/account';
 
 const routes = [
   {
@@ -47,7 +47,7 @@ const routes = [
       {
         path: 'company',
         component: () => import('@/views/layout/CompanyLayout.vue'),
-        rediction: '/intro', // '/company/intro 형태로 url 표시하려는 의미
+        redirect: '/company/intro',
         children: [
           {
             path: 'intro',
@@ -80,92 +80,38 @@ const router = createRouter({
   routes
 });
 
-// router.beforeEach(async(to, from, next) => {
-//   const token = Cookies.get('token')
-//   // 1. 퍼블릭 페이지(로그인 등)는 바로 진입 허용
-//   console.log('Token >>>>>>>>', token)
+// 전역 네비게이션 가드
 
-//   if (to.meta.public && !token && to.path === '/login') {
-//     console.log('1')
-//     return next();
-//   }
+router.beforeEach(async(to) => {
+  const authStore = useAuthStore();
+  const token = Cookies.get('token');
 
-//   // 2. 토큰이 없으면 로그인 페이지로 이동
-//   // if (!token) {
-//   //   next('/login');
-//   // }
+  console.log(`[Guard] 이동: ${String(to.name)}, 토큰: ${token}`);
 
-//   // router.beforeEach((to, from, next) => {
-//   // if (to.name !== 'Login' && !isAuth.value) {
-//   //   next({ name: 'Login' }); // Redirect to login
-//   // } else {
-//   //   next(); // Proceed as normal
-//   // }
-//   // });
-//   if (!token) {
-//       return next('/login')
-//      // 인증이 필요하지만 토큰이 없으면 로그인으로
-//   } else {
-//     const res = await axios.get('/api/account', {
-//       headers: { Authorization: `Bearer ${token}` }
-//     });
-//     console.log('res >>>>>>', res.data)
-//     // await authStore.checkAuth()
-//     // console.log('>>>>>>>>', to.name, ' | ', authStore.isAuth, authStore.user)
-//     if ( res.data.userId) {
-//       return next(); // 인증 성공 시 사이트 진입
-//     }
-//   }
+  // 로그인 페이지 이동 시
+  if (to.name === 'Login') {
+    if (token) {
 
-  // 3. 토큰이 있다면 서버 API를 통해 유효성 검증
+      return { name: 'Home' }; // 토큰 있으면 홈으로
+    }
+    return true; // 없으면 로그인 페이지 진입 허용
+  }
 
-  //   try {
-  //     console.log('beforeEach', token)
-  //     // 서버의 '내 정보' 또는 '세션 체크' API 호출
-  //     // await axios.get('/api/account', {
-  //     //   headers: { Authorization: `Bearer ${token}` }
-  //     // });
-  //     // const authStore = useAuthStore()
-
-  //   // 3. 토큰이 있다면 서버 API를 통해 유효성 검증
-  //     // 서버의 '내 정보' 또는 '세션 체크' API 호출
-  //     const res = await axios.get('/api/account', {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     });
-  //     console.log('res >>>>>>', res.data)
-  //     // await authStore.checkAuth()
-  //     // console.log('>>>>>>>>', to.name, ' | ', authStore.isAuth, authStore.user)
-  //     if ( to.path !== '/login') {
-  //       next(); // 인증 성공 시 사이트 진입
-  //     }
-  //   } catch (error) {
-  //     // 토큰이 만료되었거나 변조된 경우
-  //     Cookies.remove('token');
-  //     alert(error)
-  //     next('/login');
-  //   }
-  // });
-  // const authStore = useAuthStore()
-  // const { isAuth } = toRefs(authStore)
-  // console.log('isAuth >>>', to.name, ' | ', isAuth.value)
-  // if (to.name !== 'Login' && !isAuth.value) next({ name: 'Login' })
-  // else next()
-// })
-// router.beforeEach((
-//   to: RouteLocationNormalized,
-//   from: RouteLocationNormalized,
-//   next: NavigationGuardNext
-// ) => {
-//   // const isAuthenticated = true; // 실제 인증 로직
-
-//   const { a}
-
-//   // if (to.meta.requiresAuth && !isAuthenticated) {
-//   if (!auth) {
-//     next({ name: 'Login' }); // 로그인 페이지로 리다이렉트
-//   } else {
-//     next(); // 탐색 승인
-//   }
-// });
+  // 로그인 안 된 상태로 다른 페이지 접근 시
+  if (!token) {
+    console.warn('토큰 없음 -> 로그인 이동');
+    return { name: 'Login' };
+  }
+  if(token) {
+    try{
+      await authStore.checkAuth()
+      return true; // 그 외 통과
+    } catch(err) {
+      console.warn('토큰 유효하지 않음 -> 로그인 이동');
+      console.error('Login Error:', err);
+      return { name: 'Login' };
+    }
+  }
+});
 
 export default router

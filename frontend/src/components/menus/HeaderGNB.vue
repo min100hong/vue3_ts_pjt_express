@@ -34,15 +34,17 @@
 import { useAuthStore } from '@/stores/account';
 import { ref, toRefs } from 'vue';
 import UserInfoPopup from '../UserInfoPopup.vue';
+import { useRouter } from 'vue-router';
 
 const isOpenUserPopup = ref(false);
+const router = useRouter();
 
 const authStore = useAuthStore()
 const { user } = toRefs(authStore)
-user.value.userName = 'Default User'
 
-const userLogout = async () => {
+const userLogout = () => {
   authStore.logout()
+  router.replace({ name: 'Login' });
 }
 
 const handleOpenPopup = () => isOpenUserPopup.value = true

@@ -37,4 +37,11 @@
       background-color: #f4f4f4;
       color: #000;
   }
+
+  /* 5. Active 효과 주기 */
+  li a.active {
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+  }
 </style>
